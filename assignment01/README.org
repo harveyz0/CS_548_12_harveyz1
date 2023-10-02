@@ -1,0 +1,3 @@
+* Building presentation
+You probably need a bunch of texlive packages installed but I'm not really sure. You also need emacs installed
+src_sh[:exports code]{emacs ./presentation.org --batch -f org-beamer-export-to-pdf --kill}
