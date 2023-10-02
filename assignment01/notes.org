@@ -1,0 +1,26 @@
+#+TITLE:     Skulls to living animals
+#+AUTHOR:    Zachary Harvey
+#+EMAIL:     harveyz1@sunypoly.edu
+#+DATE:      09-30-2023
+#+DESCRIPTION: Assignment 1 for CS548-12
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+HTML_LINK_UP:
+#+HTML_LINK_HOME:
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+* Methods
+Text guided latent diffusion models for zero shot image to image translation.
+Large domain gaps (longI2I)
+
+Guided diffusion and image editing models
+Revive-2I
+

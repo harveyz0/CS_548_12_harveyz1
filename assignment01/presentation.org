@@ -1,0 +1,69 @@
+#+TITLE:     Skulls to living animals
+#+AUTHOR:    Zachary Harvey
+#+EMAIL:     harveyz1@sunypoly.edu
+#+DATE:      09-30-2023
+#+DESCRIPTION: Assignment 1 for CS548-12
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:1 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t tex:imagemagick
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+HTML_LINK_UP:
+#+HTML_LINK_HOME:
+#+BEAMER_THEME: Dresden [height=14pt]
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{adjustbox}
+
+* Problem Statement
+1. What are you trying to do?
+   - Translate a skull image to a living animal
+
+2. Why is this interesting/important?
+   - It is possible to use this idea to help research of extinct species.
+
+* Previous Work
+   - To accomplish long I2I via Revive-2I
+   - Revive-2I for zero-shot long I2I
+     + Stable Diffusion
+     + Text Prompt instead of a trained classifier
+   - Revive-2I as summarized in the paper
+     + Encoding
+     + Text  guided decoding
+
+* Previous Work con't       
+** What did they do?
+   - Convert source image to a latent representation
+   - Forward process to obtain the ODESolve(x^S; v_\theta^s, 0, 1) (ODE Ordinary differential equations)
+   - Instead of using a classifier they use a user prompt. Prompt was "a photo of the head of" for the Skull2Dog translation
+   - Using pretrained Stable Diffusion on text decoding to meld the latent representation of the pixels.
+   - Pushing this output through UNet then that through a reverse diffusion process which leads us to the end product
+
+* Previous Work con't       
++ What did they accomplish?
+   - They were able to output pictures of the correct dog. Though they mention sometimes it's with the dogs whole body or other artifacts in the image and not just the head.
++ How is it related to your problem?
+   - This presents one approach to solving this problem.
+
+* Dataset
+The data obtained from the paper was titled skull2Dog. It contains six different dog skulls and about 1201 pictures of dogs. Some dog images were obtained from AFHQ.
+#+ATTR_LaTeX: :width 0.5\textwidth
+**                                                                  :B_block:
+       :PROPERTIES:
+       :BEAMER_COL: 0.25
+       :BEAMER_ENV: block
+       :END:
+       [[./data/skull2dog/trainA/rot_0161.jpg]]
+**                                                                  :B_block:
+       :PROPERTIES:
+       :BEAMER_COL: 0.25
+       :BEAMER_ENV: block
+       :END:
+       [[./data/skull2dog/trainB/flickr_dog_000181.png]]
+
+* Proposed Approach
+- I would've organized the training data to match a breed of dog with the skull. Ideally we'd have many different pictures of the skull and it's owner while living. As it is we only have about six different skulls so we would have to do major data augmentation.
+   
