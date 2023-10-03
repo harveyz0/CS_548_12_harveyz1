@@ -17,6 +17,9 @@
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
 
+* Paper
+https://arxiv.org/abs/2308.07316
+
 * Methods
 Text guided latent diffusion models for zero shot image to image translation.
 Large domain gaps (longI2I)

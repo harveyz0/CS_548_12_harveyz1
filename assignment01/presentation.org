@@ -16,7 +16,8 @@
 #+startup: beamer
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-#+LATEX_HEADER: \usepackage{adjustbox}
+#+LATEX_HEADER: \usepackage{biblatex}
+#+LATEX_HEADER: \addbibresource{References.bib}
 
 * Problem Statement
 1. What are you trying to do?
@@ -25,7 +26,7 @@
 2. Why is this interesting/important?
    - It is possible to use this idea to help research of extinct species.
 
-* Previous Work
+* Jurassic World Remake: Bringing Ancient Fossils Back to Life via Zero-Shot Long Image-to-Image Translation
    - To accomplish long I2I via Revive-2I
    - Revive-2I for zero-shot long I2I
      + Stable Diffusion
@@ -35,7 +36,7 @@
      + Text  guided decoding
 
 * Previous Work con't       
-** What did they do?
+** What did they do? \cite{JurassicFossilsI2I}
    - Convert source image to a latent representation
    - Forward process to obtain the ODESolve(x^S; v_\theta^s, 0, 1) (ODE Ordinary differential equations)
    - Instead of using a classifier they use a user prompt. Prompt was "a photo of the head of" for the Skull2Dog translation
@@ -56,14 +57,16 @@ The data obtained from the paper was titled skull2Dog. It contains six different
        :BEAMER_COL: 0.25
        :BEAMER_ENV: block
        :END:
-       [[./data/skull2dog/trainA/rot_0161.jpg]]
+       [[./data/skull2dog/trainA/rot_0161.jpg]] \cite{anonymous2023jurassic}
 **                                                                  :B_block:
        :PROPERTIES:
        :BEAMER_COL: 0.25
        :BEAMER_ENV: block
        :END:
-       [[./data/skull2dog/trainB/flickr_dog_000181.png]]
+       [[./data/skull2dog/trainB/flickr_dog_000181.png]] \cite{choi2018stargan}
 
 * Proposed Approach
 - I would've organized the training data to match a breed of dog with the skull. Ideally we'd have many different pictures of the skull and it's owner while living. As it is we only have about six different skulls so we would have to do major data augmentation.
    
+* References 
+\printbibliography
