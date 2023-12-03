@@ -8,3 +8,6 @@ input/
 Pipfile.lock
 *.pdf
 *.tex
+train_images/
+gen_images/
+*.zip
