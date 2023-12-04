@@ -1,5 +1,5 @@
 from os import makedirs
-from os.path import join
+from os.path import join, exists
 from logging import debug
 import torch
 from diffusers import UNet2DModel
@@ -26,7 +26,7 @@ class Trainer:
                  total_epochs,
                  dataloader,
                  start_epoch=0,
-                 checkpoint_filename=None,
+                 checkpoint_file_start=None,
                  load_checkpoints=True):
         self.noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
         self.model = self.get_model(image_size)
@@ -38,7 +38,7 @@ class Trainer:
             optimizer=self.optimizer,
             num_warmup_steps=num_warmup_steps,
             num_training_steps=len(self.dataloader) * self.total_epochs)
-        self.checkpoint_filename = checkpoint_filename
+        self.checkpoint_file_start = checkpoint_file_start
         self.start_epoch = start_epoch
         if load_checkpoints:
             self.load_checkpoints()
@@ -67,11 +67,11 @@ class Trainer:
             self.accelerator.init_trackers('training')
 
     def load_checkpoints(self):
-        if not self.checkpoint_filename:
-            debug(f'No checkpoint file value of : {self.checkpoint_filename}')
+        if not self.checkpoint_file_start or not exists(self.checkpoint_file_start):
+            debug(f'No checkpoint file value of : {self.checkpoint_file_start}')
             return
-        debug(f'Loading checkpoint {self.checkpoint_filename}')
-        checkpoint = torch.load(self.checkpoint_filename)
+        debug(f'Loading checkpoint {self.checkpoint_file_start}')
+        checkpoint = torch.load(self.checkpoint_file_start)
         self.start_epoch = checkpoint[Trainer.EPOCH] + 1
         self.model.load_state_dict(checkpoint[Trainer.MODEL])
         self.optimizer.load_state_dict(checkpoint[Trainer.OPTIMIZER])
@@ -131,8 +131,8 @@ class Trainer:
 
                 with self.accelerator.accumulate(self.model):
                     #pprint(memory_stats())
-                    stuff = self.model(noisy_images, timesteps, return_dict=False)[0]
-                    loss = torch.nn.functional.mse_loss(stuff, noise)
+                    stuff = self.model(noisy_images, timesteps, return_dict=False)
+                    loss = torch.nn.functional.mse_loss(stuff[0], noise)
                     self.accelerator.backward(loss)
                     self.accelerator.clip_grad_norm_(self.model.parameters(), 1.0)
                     self.optimizer.step()
@@ -164,10 +164,15 @@ class Trainer:
                                               checkpoint_prefix)
 
     def evaluate(self, epoch, pipeline, test_dir, eval_batch_size, seed):
+        width = int(eval_batch_size / 2)
+        height = width
+        if 0 != (eval_batch_size % 2):
+            height = width + 1
+
         make_image_grid(
             pipeline(batch_size=eval_batch_size,
-                     generator=torch.manual_seed(seed)).images, 4,
-            4).save(join(test_dir, 'Image_%04d.png' % epoch))
+                     generator=torch.manual_seed(seed)).images, width,
+            height).save(join(test_dir, 'Image_%04d.png' % epoch))
 
     def save_checkpoints(self, epoch, checkpoint_directory, checkpoint_prefix):
         return torch.save(

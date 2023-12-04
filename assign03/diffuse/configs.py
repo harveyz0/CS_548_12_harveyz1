@@ -12,17 +12,17 @@ _default_config_file_path = './cfg.json'
 class Configs:
     img_height: int = 2767
     img_width: int = 4455
-    image_size = [2767, 4455]
+    image_size = [64, 128]
     img_channels: int = 3
 
     #img_resize_height: int = 830
     #img_resize_width: int = 1336
-    img_resize_height: int = 207
-    img_resize_width: int = 334
+    img_resize_height: int = 64
+    img_resize_width: int = 128
 
-    batch_size: int = 4
+    batch_size: int = 32
     eval_batch_size: int = 4
-    buffer_size: int = 4
+    buffer_size: int = 32
 
     output_channels: int = 3
 
@@ -31,13 +31,12 @@ class Configs:
     total_epochs = 100
     learning_rate = 1e-4
     lr_warmup_steps = 500
-    save_image_epochs = 10
-    save_model_epochs = 20
+    save_image_epochs = 5
+    save_model_epochs = 5
     overwrite_output_dir = True
     seed = 0
     mixed_precision: str = 'fp16'
 
-    save_at_epoch: int = 1000
     log_dir: str = "BasicGenTrain"
     log_dir_add_timestamp: bool = True
     log_with: str = 'tensorboard'
@@ -46,12 +45,15 @@ class Configs:
     checkpoint_prefix: str = 'ckpt'
     root_dir: str = "."
 
-    data_directory: str = "train_images/skull2dog/resizedA"
-    orig_data_directory: str = "train_images/skull2dog/trainA"
+    data_directory: str = "../train_images/skull2dog/resizedA"
+    orig_data_directory: str = "../train_images/skull2dog/trainA"
+
+    generated_directory: str = 'model-generated'
 
     shuffle: bool = True
 
     checkpoint_file_start: str = ""
+    model_path: str = ""
     config_file_path: str = ""
 
 
