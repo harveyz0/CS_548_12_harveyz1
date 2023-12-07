@@ -39,3 +39,28 @@ None of the A03 files are setup to load checkpoints. If you want to load a check
 you'll have to run the ./main.py file directly.
 `python ./main.py --config reale-run.cfg --checkpoint ./RealeRun/checkpoints/ckpt-30` or some
 ckpt-{number} will load up the checkpoint and continue training.
+
+
+* Output directory
+By default the reale-run.cfg will create a directory called RealeRun and put everything in that.
+If that directory already exists it will not delete anything but simply start overriding stuff.
+The overwriting does not happen all at once thus it is possible to end up with a directory with half
+from one run and half of another.
+** RealeRun
+*** checkpoints
+This will be all your checkpoint files written during the training stage.
+*** model-generated
+This will be the images built during the A03_gen.py script. Due to the way the random seed is done.
+This directory will probably always be the same. There is no way to start the generation at a particular
+point so it will just regen a bunch of the same files.
+*** model_index.json
+Honestly, no idea what this file is or where it comes from. Pretty sure it's important though.
+*** samples
+This is where the training loop will print out the images generated from the current state
+of the training.
+*** scheduler
+Yup no idea what this is either.
+*** training
+Don't know what this is either.
+*** unet
+Still don't know what this is.

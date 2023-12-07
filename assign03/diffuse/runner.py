@@ -1,4 +1,4 @@
-from os import makedirs
+from os import makedirs, listdir
 from os.path import join
 from diffusers import DDPMPipeline
 from diffuse.data import skulls_dataset, class_dataset
@@ -30,7 +30,7 @@ def load_model(config):
     to_dir = join(config.log_dir, config.generated_directory)
     makedirs(to_dir, exist_ok=True)
     training = load_trainer(config)
-    pipeline = DDPMPipeline.from_pretrained(config.model_path)
+    pipeline = DDPMPipeline.from_pretrained(config.model_path).to("cuda")
     for i in range(config.generate_n_images):
         images = training.evaluate(pipeline, 10, i)
         for img in images:
@@ -38,13 +38,15 @@ def load_model(config):
 
 
 def eval_generated(config):
+    # TODO Fix kid_subset_size
     from torch_fidelity import calculate_metrics
+    num_files = len(listdir(join(config.log_dir, config.generated_directory)))
     metrics = calculate_metrics(input2=config.data_directory,
                                 input1=join(config.log_dir,
                                             config.generated_directory),
                                 fid=True,
                                 kid=True,
-                                kid_subset_size=4,
+                                kid_subset_size=num_files,
                                 cuda=True)
     print('All our metrics')
     pprint(metrics)
