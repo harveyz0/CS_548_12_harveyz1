@@ -119,7 +119,7 @@ class Trainer:
             progress_bar.set_description(f'Epoch {epoch}')
 
             for batch in self.dataloader:
-                clean_images = batch
+                clean_images = batch["images"]
                 noise = torch.randn(clean_images.shape).to(clean_images.device)
                 bs = clean_images.shape[0]
                 timesteps = torch.randint(
@@ -155,24 +155,27 @@ class Trainer:
                                             scheduler=self.noise_scheduler)
 
                     if (epoch + 1) % save_image_epochs == 0:
-                        self.evaluate(epoch, pipeline, test_dir,
-                                      eval_batch_size, seed)
+                        self.make_image_grid(self.evaluate(pipeline, eval_batch_size, seed), test_dir, epoch)
 
                     if (epoch + 1) % save_model_epochs == 0:
                         pipeline.save_pretrained(log_dir)
                         self.save_checkpoints(epoch, checkpoint_directory,
                                               checkpoint_prefix)
 
-    def evaluate(self, epoch, pipeline, test_dir, eval_batch_size, seed):
-        width = int(eval_batch_size / 2)
-        height = width
-        if 0 != (eval_batch_size % 2):
-            height = width + 1
+    def evaluate(self, pipeline, eval_batch_size, seed):
+        return pipeline(batch_size=eval_batch_size, generator=torch.manual_seed(seed)).images
 
-        make_image_grid(
-            pipeline(batch_size=eval_batch_size,
-                     generator=torch.manual_seed(seed)).images, width,
-            height).save(join(test_dir, 'Image_%04d.png' % epoch))
+    def make_image_grid(self, images, test_dir, epoch):
+        width = int(len(images) / 2)
+        height = width
+        if 0 != (len(images) % 2):
+            height = width + 1
+        make_image_grid(images, width, height).save(join(test_dir, 'Image_%04d.png' % epoch))
+
+    def save_images(self, images, test_dir):
+        i = 0 # This isn't gonna work right because it resets to zero every function call
+        for img in images:
+            img.save(join(test_dir, 'Image_%04d.png' % i))
 
     def save_checkpoints(self, epoch, checkpoint_directory, checkpoint_prefix):
         return torch.save(

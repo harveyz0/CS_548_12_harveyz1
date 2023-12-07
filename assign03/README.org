@@ -1,0 +1,41 @@
+* Assignment 3 CS548-12
+Author: Zachary Harvey
+Email: harveyz1@sunypoly.edu
+Year: 2023-12-08
+
+* Data Instructions
+To run it on data from previous assignments then put the trainA.zip file, stored and shared with
+you in my schools OneDrive folder, in this directory then run A03_data.bash.
+A03_data.bash should extract the contents to ../train_images/skull2dog/trainA/
+
+* Conda setup
+I use the CV environment we made in class. If I added or removed anything I don't remember
+and I'm including an environment yaml file you can check against.
+
+* Operations
+** main.py
+There is a main.py that contains all the operations with command line switches. You can just run
+`python ./main.py --help` to see all the options. All the A03 files really just call into
+diffuse.main with hardcoded command line arguments.
+** A03 files
+*** A03_data.py
+Once you're in the conda environment you can run the `python A03_data.py` and that should go out and
+find the data in the aforementioned directory. By default it uses the reale-run.cfg file. This is just
+a JSON file read into the dataclass object for the program.
+*** A03_train.py
+Once the resizing is done you can run the `python A03_train.py` file. This will start the training
+printing a progress bar for every epoch. The training itself doesn't take very long but the image
+generation does. You can adjust the frequency of image generation by adjusting the value in
+reale-run.cfg with the key save_image_epochs to a higher number.
+*** A03_gen.py
+Once the model is built you can run `python A03_gen.py` to have it build a bunch of images.
+The default is one hundred single files of one image per file.
+*** A03_eval.py
+Running `python A03_eval.py` will scan the resize directory and the generated images directory
+and print the scores dictionary to the screen.
+
+** Loading checkpoints
+None of the A03 files are setup to load checkpoints. If you want to load a checkpoint then
+you'll have to run the ./main.py file directly.
+`python ./main.py --config reale-run.cfg --checkpoint ./RealeRun/checkpoints/ckpt-30` or some
+ckpt-{number} will load up the checkpoint and continue training.

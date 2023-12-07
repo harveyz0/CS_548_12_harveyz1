@@ -1,7 +1,7 @@
 from os import makedirs
 from os.path import join
 from diffusers import DDPMPipeline
-from diffuse.data import skulls_dataset
+from diffuse.data import skulls_dataset, class_dataset
 from diffuse.trainer import Trainer
 from pprint import pprint
 
@@ -31,8 +31,10 @@ def load_model(config):
     makedirs(to_dir, exist_ok=True)
     training = load_trainer(config)
     pipeline = DDPMPipeline.from_pretrained(config.model_path)
-    for i in range(100):
-        training.evaluate(i, pipeline, to_dir, 10, 0)
+    for i in range(config.generate_n_images):
+        images = training.evaluate(pipeline, 10, i)
+        for img in images:
+            img.save(join(to_dir, 'generated_%04d.png' % i))
 
 
 def eval_generated(config):
@@ -42,7 +44,7 @@ def eval_generated(config):
                                             config.generated_directory),
                                 fid=True,
                                 kid=True,
-                                kid_subset_size=700,
+                                kid_subset_size=4,
                                 cuda=True)
     print('All our metrics')
     pprint(metrics)

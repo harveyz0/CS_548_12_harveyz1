@@ -5,6 +5,7 @@ from os.path import join
 getLogger().setLevel(level=DEBUG)
 getLogger("tensorflow").setLevel(ERROR)
 getLogger("accelerate.tracking").setLevel(ERROR)
+getLogger("PIL.PngImagePlugin").setLevel(ERROR)
 
 
 def arg_parser(args):
@@ -80,6 +81,11 @@ def load_model_arg(parser):
     cfg.model_path = parser.load_model
     load_model(cfg)
 
+def eval_args(parser):
+    from diffuse.runner import eval_generated
+    cfg = load_config_arg(parser)
+    eval_generated(cfg)
+
 
 def main(*args):
     parser = arg_parser(args)
@@ -89,5 +95,7 @@ def main(*args):
         resize_images(parser)
     elif parser.load_model:
         load_model_arg(parser)
+    elif parser.eval:
+        eval_args(parser)
     else:
         main_run(parser)
