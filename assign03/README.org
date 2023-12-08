@@ -2,6 +2,7 @@
 Author: Zachary Harvey
 Email: harveyz1@sunypoly.edu
 Year: 2023-12-08
+Handed in: 2023-12-08
 
 * Data Instructions
 To run it on data from previous assignments then put the trainA.zip file, stored and shared with
