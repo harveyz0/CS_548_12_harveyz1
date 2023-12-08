@@ -27,7 +27,7 @@ def full_run(config):
 
 
 def load_model(config):
-    images_per_batch = 10
+    images_per_batch = config.eval_batch_size
     to_dir = join(config.log_dir, config.generated_directory)
     makedirs(to_dir, exist_ok=True)
     training = load_trainer(config)

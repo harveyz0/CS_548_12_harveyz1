@@ -29,7 +29,8 @@ generation does. You can adjust the frequency of image generation by adjusting t
 reale-run.cfg with the key save_image_epochs to a higher number.
 *** A03_gen.py
 Once the model is built you can run `python A03_gen.py` to have it build a bunch of images.
-The default is one hundred single files of one image per file.
+There is a config option called generate_n_images that is set to 100. This will be multipled
+by eval_batch_size which I have set to 10. This will give you the thousand images.
 *** A03_eval.py
 Running `python A03_eval.py` will scan the resize directory and the generated images directory
 and print the scores dictionary to the screen.

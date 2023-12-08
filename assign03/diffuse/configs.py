@@ -27,7 +27,7 @@ class Configs:
     img_resize_width: int = 128
 
     batch_size: int = 32
-    eval_batch_size: int = 4
+    eval_batch_size: int = 10
 
     gradient_accumulation_steps: int = 1
     # You don't really need to configure start epoch
@@ -57,7 +57,7 @@ class Configs:
 
     # When you load-model this it will use this join(log_dir, generated_directory) to
     # put all the generated images. Images will be named counting upwards with a limit
-    # of generate_n_images
+    # of generate_n_images * eval_batch_size
     generated_directory: str = 'model-generated'
     generate_n_images: int = 100
 

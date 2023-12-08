@@ -81,6 +81,7 @@ def load_model_arg(parser):
     cfg.model_path = parser.load_model
     load_model(cfg)
 
+
 def eval_args(parser):
     from diffuse.runner import eval_generated
     cfg = load_config_arg(parser)
