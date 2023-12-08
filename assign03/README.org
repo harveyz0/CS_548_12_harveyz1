@@ -7,6 +7,11 @@ Year: 2023-12-08
 To run it on data from previous assignments then put the trainA.zip file, stored and shared with
 you in my schools OneDrive folder, in this directory then run A03_data.bash.
 A03_data.bash should extract the contents to ../train_images/skull2dog/trainA/
+** Saved Model
+I have uploaded a compressed version of the saved model and the 1000 images to my OneDrive that
+is shared with you. You should be able to just uncompress it right into this directory and
+run the eval and gen scripts as normal. I didn't upload the checkpoints because they were about 1.3G
+each and there was like 40 of them.
 
 * Conda setup
 I use the CV environment we made in class. If I added or removed anything I don't remember
@@ -20,8 +25,8 @@ diffuse.main with hardcoded command line arguments.
 ** A03 files
 *** A03_data.py
 Once you're in the conda environment you can run the `python A03_data.py` and that should go out and
-find the data in the aforementioned directory. By default it uses the reale-run.cfg file. This is just
-a JSON file read into the dataclass object for the program.
+find the data in the ../train_images/skull2dog/trainA/ directory. By default it uses the
+reale-run.cfg file. This is just a JSON file read into the dataclass object for the program.
 *** A03_train.py
 Once the resizing is done you can run the `python A03_train.py` file. This will start the training
 printing a progress bar for every epoch. The training itself doesn't take very long but the image

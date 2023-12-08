@@ -89,14 +89,17 @@ def eval_args(parser):
 
 
 def main(*args):
-    parser = arg_parser(args)
-    if parser.dump_config:
-        dump_stdout_config(parser)
-    elif parser.resize:
-        resize_images(parser)
-    elif parser.load_model:
-        load_model_arg(parser)
-    elif parser.eval:
-        eval_args(parser)
-    else:
-        main_run(parser)
+    try:
+        parser = arg_parser(args)
+        if parser.dump_config:
+            dump_stdout_config(parser)
+        elif parser.resize:
+            resize_images(parser)
+        elif parser.load_model:
+            load_model_arg(parser)
+        elif parser.eval:
+            eval_args(parser)
+        else:
+            main_run(parser)
+    except KeyboardInterrupt:
+        pass

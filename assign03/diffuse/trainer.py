@@ -67,8 +67,10 @@ class Trainer:
             self.accelerator.init_trackers('training')
 
     def load_checkpoints(self):
-        if not self.checkpoint_file_start or not exists(self.checkpoint_file_start):
-            debug(f'No checkpoint file value of : {self.checkpoint_file_start}')
+        if not self.checkpoint_file_start or not exists(
+                self.checkpoint_file_start):
+            debug(
+                f'No checkpoint file value of : {self.checkpoint_file_start}')
             return
         debug(f'Loading checkpoint {self.checkpoint_file_start}')
         checkpoint = torch.load(self.checkpoint_file_start)
@@ -131,10 +133,13 @@ class Trainer:
 
                 with self.accelerator.accumulate(self.model):
                     #pprint(memory_stats())
-                    stuff = self.model(noisy_images, timesteps, return_dict=False)
+                    stuff = self.model(noisy_images,
+                                       timesteps,
+                                       return_dict=False)
                     loss = torch.nn.functional.mse_loss(stuff[0], noise)
                     self.accelerator.backward(loss)
-                    self.accelerator.clip_grad_norm_(self.model.parameters(), 1.0)
+                    self.accelerator.clip_grad_norm_(self.model.parameters(),
+                                                     1.0)
                     self.optimizer.step()
                     self.lr_scheduler.step()
                     self.optimizer.zero_grad()
@@ -149,31 +154,35 @@ class Trainer:
                 self.accelerator.log(logs, step=global_step)
                 global_step += 1
 
-                if self.accelerator.is_main_process:
-                    pipeline = DDPMPipeline(unet= \
-                                            self.accelerator.unwrap_model(self.model),
-                                            scheduler=self.noise_scheduler)
+            if self.accelerator.is_main_process:
+                pipeline = DDPMPipeline(
+                    unet=self.accelerator.unwrap_model(self.model),
+                    scheduler=self.noise_scheduler).to("cuda")
 
-                    if (epoch + 1) % save_image_epochs == 0:
-                        self.make_image_grid(self.evaluate(pipeline, eval_batch_size, seed), test_dir, epoch)
+                if (epoch + 1) % save_image_epochs == 0:
+                    self.make_image_grid(
+                        self.evaluate(pipeline, eval_batch_size, seed),
+                        test_dir, epoch)
 
-                    if (epoch + 1) % save_model_epochs == 0:
-                        pipeline.save_pretrained(log_dir)
-                        self.save_checkpoints(epoch, checkpoint_directory,
-                                              checkpoint_prefix)
+                if (epoch + 1) % save_model_epochs == 0:
+                    pipeline.save_pretrained(log_dir)
+                    self.save_checkpoints(epoch, checkpoint_directory,
+                                          checkpoint_prefix)
 
     def evaluate(self, pipeline, eval_batch_size, seed):
-        return pipeline(batch_size=eval_batch_size, generator=torch.manual_seed(seed)).images
+        return pipeline(batch_size=eval_batch_size,
+                        generator=torch.manual_seed(seed)).images
 
     def make_image_grid(self, images, test_dir, epoch):
         width = int(len(images) / 2)
         height = width
         if 0 != (len(images) % 2):
             height = width + 1
-        make_image_grid(images, width, height).save(join(test_dir, 'Image_%04d.png' % epoch))
+        make_image_grid(images, width,
+                        height).save(join(test_dir, f'Image_{epoch:04}.png'))
 
     def save_images(self, images, test_dir):
-        i = 0 # This isn't gonna work right because it resets to zero every function call
+        i = 0  # This isn't gonna work right because it resets to zero every function call
         for img in images:
             img.save(join(test_dir, 'Image_%04d.png' % i))
 
