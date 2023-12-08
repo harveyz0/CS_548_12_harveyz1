@@ -73,6 +73,9 @@ class Configs:
     # The config file that was loaded when the program started.
     config_file_path: str = ""
 
+    # I'm gonna add this so I can pick up generating where I left off because I have to turn the computer off now.
+    start_generating_at: int = 0
+
     def __post_init__(self):
         self.image_size = [self.img_resize_height, self.img_resize_width]
 

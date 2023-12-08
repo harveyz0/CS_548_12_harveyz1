@@ -32,7 +32,7 @@ def load_model(config):
     makedirs(to_dir, exist_ok=True)
     training = load_trainer(config)
     pipeline = DDPMPipeline.from_pretrained(config.model_path).to("cuda")
-    for i in range(config.generate_n_images):
+    for i in range(config.start_generating_at, config.generate_n_images):
         images = training.evaluate(pipeline, images_per_batch, i)
         cur_set = i * images_per_batch
         for j in range(len(images)):
