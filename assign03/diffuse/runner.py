@@ -27,18 +27,19 @@ def full_run(config):
 
 
 def load_model(config):
+    images_per_batch = 10
     to_dir = join(config.log_dir, config.generated_directory)
     makedirs(to_dir, exist_ok=True)
     training = load_trainer(config)
     pipeline = DDPMPipeline.from_pretrained(config.model_path).to("cuda")
     for i in range(config.generate_n_images):
-        images = training.evaluate(pipeline, 10, i)
-        for img in images:
-            img.save(join(to_dir, 'generated_%04d.png' % i))
+        images = training.evaluate(pipeline, images_per_batch, i)
+        cur_set = i * images_per_batch
+        for j in range(len(images)):
+            images[j].save(join(to_dir, 'generated_%04d.png' % (cur_set + j)))
 
 
 def eval_generated(config):
-    # TODO Fix kid_subset_size
     from torch_fidelity import calculate_metrics
     num_files = len(listdir(join(config.log_dir, config.generated_directory)))
     metrics = calculate_metrics(input2=config.data_directory,
