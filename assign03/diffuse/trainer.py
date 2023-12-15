@@ -11,6 +11,7 @@ from tqdm import tqdm
 from transformers import get_cosine_schedule_with_warmup
 from torch.cuda import memory_stats
 from pprint import pprint
+import math as m
 
 
 class Trainer:
@@ -174,10 +175,12 @@ class Trainer:
                         generator=torch.manual_seed(seed)).images
 
     def make_image_grid(self, images, test_dir, epoch):
-        width = int(len(images) / 2)
+        width = int(m.sqrt(len(images))) # / 2)
         height = width
-        if 0 != (len(images) % 2):
-            height = width + 1
+        #if 0 != (len(images) % 2):
+        #   height = width + 1
+        if (width*height) != len(images):
+            images = images[:(width*height)]
         make_image_grid(images, width,
                         height).save(join(test_dir, f'Image_{epoch:04}.png'))
 
