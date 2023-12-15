@@ -11,3 +11,6 @@ Pipfile.lock
 train_images/
 gen_images/
 *.zip
+assign03/RealeRun/
+*.xz
+
